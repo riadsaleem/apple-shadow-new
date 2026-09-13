@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="الظل للمظلات والسواتر">
+  <defs>
+    <linearGradient id="apB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E11D2A"/><stop offset="1" stop-color="#A60814"/></linearGradient>
+    <linearGradient id="apL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22a06b"/><stop offset="1" stop-color="#15704a"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="15" fill="#f7f4ec"/>
+  <path d="M32 16c-3-4-9-5-13.5-2C12 17.5 8 23 8 30c0 12 9 23 16 23 2.5 0 4-1.5 8-1.5s5.5 1.5 8 1.5c7 0 16-11 16-23 0-7-4-12.5-10.5-16C41 11 35 12 32 16z" transform="translate(2.4,3.2)" fill="#0a2b21" opacity=".13"/>
+  <path d="M32 16c-3-4-9-5-13.5-2C12 17.5 8 23 8 30c0 12 9 23 16 23 2.5 0 4-1.5 8-1.5s5.5 1.5 8 1.5c7 0 16-11 16-23 0-7-4-12.5-10.5-16C41 11 35 12 32 16z" fill="url(#apB)"/>
+  <path d="M34 15c3-6 10-9 17-8-.8 7-7.6 11.2-15 10z" fill="url(#apL)"/>
+  <path d="M31.6 16.4c-.7-3.3.2-6.2 2.6-8.6" fill="none" stroke="#6b4a2b" stroke-width="2.8" stroke-linecap="round"/>
+</svg>

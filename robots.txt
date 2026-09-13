@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://apple-shadow.vercel.app/sitemap.xml
