@@ -4,7 +4,7 @@
 
   /* Header shadow on scroll */
   var header = document.querySelector(".site-header");
-  function onScroll() { if (header) header.classList.toggle("is-scrolled", window.scrollY > 8); }
+  function onScroll() { if (header) header.classList.toggle("is-scrolled", window.scrollY > 50); }
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
