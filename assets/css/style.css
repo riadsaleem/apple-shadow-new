@@ -104,12 +104,16 @@ p { color: var(--muted); }
   background: rgba(255,255,255,.92);
   backdrop-filter: saturate(160%) blur(12px);
   border-bottom: 1px solid var(--line);
-  transition: box-shadow .3s var(--ease);
+  transition: box-shadow .3s var(--ease), border-radius .4s cubic-bezier(.4,0,.2,1);
 }
-.site-header.is-scrolled { box-shadow: var(--shadow-sm); }
+.site-header.is-scrolled { box-shadow: var(--shadow-sm); border-radius: 0 0 18px 18px; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: var(--header-h); }
-.brand { display: flex; align-items: center; gap: 12px; max-height: 60px; overflow: hidden; transition: max-height .35s var(--ease), opacity .3s var(--ease), margin .3s var(--ease), padding .3s var(--ease); }
-.site-header.is-scrolled .brand { max-height: 0; opacity: 0; margin: 0; padding: 0; }
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  transition: transform .45s cubic-bezier(.4,0,.2,1), opacity .35s cubic-bezier(.4,0,.2,1), max-height .45s cubic-bezier(.4,0,.2,1), margin .4s cubic-bezier(.4,0,.2,1);
+  transform: translateY(0); opacity: 1; max-height: 60px; overflow: hidden;
+}
+.site-header.is-scrolled .brand { transform: translateY(-12px); opacity: 0; max-height: 0; margin: 0; }
 .brand-logo { height: 44px; width: auto; max-width: 160px; object-fit: contain; display: block; }
 .brand-logo--footer { height: 58px; max-width: 220px; filter: drop-shadow(0 0 6px rgba(255,255,255,.45)) drop-shadow(0 0 2px rgba(255,255,255,.6)); }
 .brand-name { font-size: 1.1rem; font-weight: 800; color: var(--green-900); white-space: nowrap; }
