@@ -397,25 +397,22 @@ p { color: var(--muted); }
   .gallery { column-count: 2; }
 }
 @media (max-width: 900px) {
-  .header-inner { flex-wrap: wrap; gap: 8px; padding-block: 7px; min-height: 0; align-items: center; overflow-x: visible; }
+  .header-inner { flex-wrap: nowrap; gap: 6px; padding-block: 6px; min-height: 0; align-items: center; }
   .brand { flex: none; }
-  .brand-logo { height: 36px; }
+  .brand-logo { height: 44px; }
   .main-nav {
-    order: 3; width: 100%; display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 5px 6px; padding: 4px 0;
+    flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 3px 4px; padding: 2px 0;
   }
-  .main-nav a { white-space: nowrap; padding: 6px 10px; font-size: .82rem; background: var(--green-050); border-radius: 100px; }
-  .header-actions { gap: 8px; }
-  .header-actions .btn--gold { padding: 0; width: 40px; height: 40px; border-radius: 12px; }
-  .btn--call-label { display: none; }
+  .main-nav a { white-space: nowrap; padding: 5px 8px; font-size: .78rem; background: var(--green-050); border-radius: 100px; }
+  .header-actions { display: none; }
 }
 @media (max-width: 560px) {
   .gallery { column-count: 1; }
   .footer-grid { grid-template-columns: 1fr; gap: 30px; }
-  .brand-logo { height: 32px; }
+  .brand-logo { height: 38px; }
   .brand-logo--footer { height: 50px; }
-  .main-nav a { padding: 5px 9px; font-size: .78rem; }
-  .header-actions .btn--gold { width: 38px; height: 38px; }
+  .main-nav a { padding: 4px 7px; font-size: .74rem; }
   .float-actions a { width: 50px; height: 50px; }
 }
 
