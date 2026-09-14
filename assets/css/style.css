@@ -111,6 +111,7 @@ p { color: var(--muted); }
 .brand { display: flex; align-items: center; gap: 12px; }
 .brand-logo { height: 44px; width: auto; max-width: 160px; object-fit: contain; display: block; }
 .brand-logo--footer { height: 58px; max-width: 220px; filter: drop-shadow(0 0 6px rgba(255,255,255,.45)) drop-shadow(0 0 2px rgba(255,255,255,.6)); }
+.brand-name { font-size: 1.1rem; font-weight: 800; color: var(--green-900); white-space: nowrap; }
 .brand-mark { width: 46px; height: 46px; flex: none; }
 .brand-mark svg { width: 100%; height: 100%; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
@@ -397,9 +398,10 @@ p { color: var(--muted); }
   .gallery { column-count: 2; }
 }
 @media (max-width: 900px) {
-  .header-inner { flex-wrap: wrap; justify-content: center; gap: 0; padding-block: 10px 6px; min-height: 0; }
-  .brand { width: 100%; justify-content: center; }
-  .brand-logo { height: 44px; }
+  .header-inner { flex-wrap: wrap; justify-content: flex-start; gap: 0; padding-block: 10px 6px; min-height: 0; }
+  .brand { width: 100%; justify-content: flex-start; }
+  .brand-logo { height: 40px; }
+  .brand-name { font-size: 1rem; }
   .main-nav {
     width: 100%; display: flex; flex-wrap: nowrap; justify-content: center;
     gap: 6px; padding: 6px 0 2px; border-top: 1px solid var(--line); margin-top: 8px;
