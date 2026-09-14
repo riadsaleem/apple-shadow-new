@@ -111,8 +111,7 @@ p { color: var(--muted); }
 .brand { display: flex; align-items: center; gap: 12px; }
 .brand-logo { height: 44px; width: auto; max-width: 160px; object-fit: contain; display: block; }
 .brand-logo--footer { height: 58px; max-width: 220px; filter: drop-shadow(0 0 6px rgba(255,255,255,.45)) drop-shadow(0 0 2px rgba(255,255,255,.6)); }
-.brand-name { font-size: 1.1rem; font-weight: 800; color: var(--green-900); white-space: nowrap; }
-.brand-name .gold { color: var(--gold-600); }
+.brand-name { font-size: 1.1rem; font-weight: 800; color: var(--green-900); white-space: nowrap; background: var(--green-050); padding: 5px 14px; border-radius: 10px; }
 .brand-mark { width: 46px; height: 46px; flex: none; }
 .brand-mark svg { width: 100%; height: 100%; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
