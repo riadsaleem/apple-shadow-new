@@ -407,7 +407,7 @@ p { color: var(--muted); }
     width: 100%; display: flex; flex-wrap: nowrap; justify-content: center;
     gap: 6px; padding: 6px 0 2px; border-top: 1px solid var(--line); margin-top: 8px;
   }
-  .main-nav a { white-space: nowrap; padding: 7px 14px; font-size: .85rem; background: var(--green-050); border-radius: 100px; }
+  .main-nav a { white-space: nowrap; padding: 7px 14px; font-size: .85rem; }
   .header-actions { display: none; }
 }
 @media (max-width: 560px) {
