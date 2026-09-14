@@ -106,7 +106,7 @@ p { color: var(--muted); }
   border-bottom: 1px solid var(--line);
   transition: box-shadow .3s var(--ease), border-radius .4s cubic-bezier(.4,0,.2,1);
 }
-.site-header.is-scrolled { box-shadow: var(--shadow-sm); border-radius: 0 0 8px 8px; }
+.site-header.is-scrolled { box-shadow: var(--shadow-sm); border-radius: 0 0 12px 12px; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: var(--header-h); }
 .brand {
   display: flex; align-items: center; gap: 12px;
