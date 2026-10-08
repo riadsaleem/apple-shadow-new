@@ -43,51 +43,164 @@
     revealables.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
-  /* Gallery lightbox */
-  var lightbox = document.getElementById("lightbox");
-  var lightboxImg = lightbox ? lightbox.querySelector("img") : null;
-  var triggers = [];
-  var current = 0;
+  /* ============================================================
+     Reusable image lightbox (modal) component.
+     A single factory serves every page; markup is reused when
+     #lightbox exists, otherwise it is injected automatically.
 
-  function collectTriggers() {
-    triggers = [];
-    document.querySelectorAll("[data-lightbox]").forEach(function (el) {
-      if (el.offsetParent === null) return; /* skip hidden (filtered) items */
-      el.addEventListener("click", function () { openLightbox(triggers.indexOf(el)); });
-      triggers.push(el);
+       Lightbox.open([{ src, alt }], startIndex)
+       Lightbox.close()
+
+     Declarative triggers:
+       [data-lightbox]            -> navigates across all visible
+                                     [data-lightbox] items on the page
+       [data-gallery="<category>"] -> opens the full work gallery of a
+                                     service category (services page)
+     ============================================================ */
+
+  /* Work galleries per service category (used by the services page). */
+  var GALLERY_DIRS = {
+    madhalat: "assets/img/madhalat/",
+    swater: "assets/img/swater/",
+    pergolas: "assets/img/pergolas/",
+    sandwich: "assets/img/sandwich/",
+    tansiq: "assets/img/tansiq/",
+    shabak: "assets/img/shabak/",
+    grass: "assets/img/grass/",
+    metalwork: "assets/img/metalwork/",
+    construction: "assets/img/construction/"
+  };
+  var GALLERY_NUMS = {
+    madhalat: [1, 2, 3, 4, 5, 6, 8, 9],
+    swater: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    pergolas: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+    sandwich: [1, 2, 3, 4, 5, 6, 7],
+    tansiq: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+    shabak: [1, 2, 3, 4, 5, 6, 7, 8],
+    grass: [1, 2, 3, 4, 5, 6],
+    metalwork: [1, 2, 3],
+    construction: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+  };
+  function categoryImages(cat, alt) {
+    var dir = GALLERY_DIRS[cat], nums = GALLERY_NUMS[cat];
+    if (!dir || !nums) return [];
+    return nums.map(function (n) { return { src: dir + n + ".jpg", alt: alt || "" }; });
+  }
+
+  function createLightbox(root) {
+    if (!root) return null;
+    var imgEl = root.querySelector("img");
+    var prevBtn = root.querySelector(".lightbox__prev");
+    var nextBtn = root.querySelector(".lightbox__next");
+    var closeBtn = root.querySelector(".lightbox__close");
+    var items = [];
+    var index = 0;
+
+    function render() {
+      var item = items[index];
+      if (!item || !imgEl) return;
+      imgEl.src = item.src;
+      imgEl.alt = item.alt || "";
+    }
+    function isOpen() { return root.classList.contains("is-open"); }
+    function open(list, start) {
+      items = (list || []).filter(Boolean).slice();
+      if (!items.length) return;
+      index = (((start || 0) % items.length) + items.length) % items.length;
+      render();
+      root.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    }
+    function close() { root.classList.remove("is-open"); document.body.style.overflow = ""; }
+    function step(dir) {
+      if (items.length < 1) return;
+      index = (index + dir + items.length) % items.length;
+      render();
+    }
+
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    if (prevBtn) prevBtn.addEventListener("click", function () { step(-1); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { step(1); });
+    root.addEventListener("click", function (e) { if (e.target === root) close(); });
+
+    /* Touch swipe for mobile */
+    var startX = 0, startY = 0, swiping = false;
+    root.addEventListener("touchstart", function (e) {
+      if (!isOpen() || e.touches.length !== 1) return;
+      swiping = true;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    root.addEventListener("touchend", function (e) {
+      if (!swiping) return;
+      swiping = false;
+      var t = e.changedTouches && e.changedTouches[0];
+      if (!t) return;
+      var dx = t.clientX - startX, dy = t.clientY - startY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    return { open: open, close: close, step: step, isOpen: isOpen };
+  }
+
+  /* Reuse the page's #lightbox markup, or create it once if absent. */
+  function ensureLightbox() {
+    var root = document.getElementById("lightbox");
+    if (root) return root;
+    root = document.createElement("div");
+    root.className = "lightbox";
+    root.id = "lightbox";
+    root.setAttribute("role", "dialog");
+    root.setAttribute("aria-modal", "true");
+    root.setAttribute("aria-label", "عرض الصورة");
+    root.innerHTML =
+      '<button class="lightbox__close" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>' +
+      '<button class="lightbox__prev" aria-label="السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>' +
+      '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="1200" height="800">' +
+      '<button class="lightbox__next" aria-label="التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>';
+    document.body.appendChild(root);
+    return root;
+  }
+
+  var lightbox = createLightbox(ensureLightbox());
+
+  function visibleItems(selector) {
+    return Array.prototype.filter.call(document.querySelectorAll(selector), function (el) {
+      return el.offsetParent !== null; /* skip hidden (filtered) items */
     });
   }
-  function openLightbox(i) {
-    if (!lightbox || !lightboxImg || !triggers[i]) return;
-    current = i;
-    lightboxImg.src = triggers[i].getAttribute("data-lightbox");
-    lightboxImg.alt = triggers[i].getAttribute("data-alt") || "";
-    lightbox.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-  }
-  function closeLightbox() {
-    if (!lightbox) return;
-    lightbox.classList.remove("is-open");
-    document.body.style.overflow = "";
-  }
-  function step(dir) {
-    if (!triggers.length) return;
-    current = (current + dir + triggers.length) % triggers.length;
-    lightboxImg.src = triggers[current].getAttribute("data-lightbox");
-    lightboxImg.alt = triggers[current].getAttribute("data-alt") || "";
-  }
-  if (lightbox) {
-    collectTriggers();
-    lightbox.querySelector(".lightbox__close").addEventListener("click", closeLightbox);
-    lightbox.querySelector(".lightbox__prev").addEventListener("click", function () { step(-1); });
-    lightbox.querySelector(".lightbox__next").addEventListener("click", function () { step(1); });
-    lightbox.addEventListener("click", function (e) { if (e.target === lightbox) closeLightbox(); });
-  }
+
+  /* Delegated trigger handling keeps working after filtering. */
+  document.addEventListener("click", function (e) {
+    if (!e.target || !e.target.closest) return;
+
+    var trigger = e.target.closest("[data-lightbox]");
+    if (trigger) {
+      e.preventDefault();
+      var group = visibleItems("[data-lightbox]");
+      var list = group.map(function (el) {
+        return { src: el.getAttribute("data-lightbox"), alt: el.getAttribute("data-alt") || "" };
+      });
+      lightbox.open(list, group.indexOf(trigger));
+      return;
+    }
+
+    var card = e.target.closest("[data-gallery]");
+    if (card) {
+      e.preventDefault();
+      var thumb = card.querySelector("img");
+      var alt = thumb ? thumb.getAttribute("alt") : "";
+      var arr = categoryImages(card.getAttribute("data-gallery"), alt);
+      var at = thumb ? arr.map(function (o) { return o.src; }).indexOf(thumb.getAttribute("src")) : 0;
+      lightbox.open(arr, at < 0 ? 0 : at);
+    }
+  });
+
   window.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") { closeNav(); closeLightbox(); }
-    if (!lightbox || !lightbox.classList.contains("is-open")) return;
-    if (e.key === "ArrowLeft") step(1);
-    if (e.key === "ArrowRight") step(-1);
+    if (e.key === "Escape") { closeNav(); if (lightbox) lightbox.close(); }
+    if (!lightbox || !lightbox.isOpen()) return;
+    if (e.key === "ArrowLeft") lightbox.step(1);
+    if (e.key === "ArrowRight") lightbox.step(-1);
   });
 
   /* Gallery category filter */
@@ -103,7 +216,6 @@
           var show = cat === "all" || item.getAttribute("data-cat") === cat;
           item.style.display = show ? "" : "none";
         });
-        collectTriggers();
       });
     });
   }
